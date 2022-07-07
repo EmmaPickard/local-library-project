@@ -7,12 +7,16 @@ function sortAccountsByLastName(accounts) {
   acctA.name.last.toLowerCase() > acctB.name.last.toLowerCase() ? 1: -1)
 }
 
-function getTotalNumberOfBorrows(accounts, books) {
-  let bookTot = 0
-  let reader = accounts.id
-  books.forEach(book => 
-    book.borrows.forEach(borrow => reader === borrow.id && bookTot ++))
-  return bookTot
+function getTotalNumberOfBorrows({ id: accountId }, books) {
+  return books.reduce((acc, book) => {
+    let { borrows } = book;
+    for (let key of borrows) {
+      if (key.id === accountId) {
+        acc++;
+      }
+    }
+    return acc;
+  }, 0);
 }
 
 function getBooksPossessedByAccount(account, books, authors) {
